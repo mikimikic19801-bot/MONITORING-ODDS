@@ -1,56 +1,25 @@
 {
   "name": "OddsAlert Pro",
   "short_name": "OddsAlert",
-  "description": "⚽ Praćenje kvota i rezultata uživo sa pametnim alertima",
+  "description": "Praćenje kvota, rezultata i padova favorita uživo",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0a0a1a",
-  "theme_color": "#1a1a2e",
-  "orientation": "portrait-primary",
-  "scope": "./",
+  "background_color": "#0a0a14",
+  "theme_color": "#0f0f1a",
+  "orientation": "portrait",
   "lang": "sr",
-  "categories": ["sports", "utilities", "entertainment"],
   "icons": [
     {
-      "src": "https://api.dicebear.com/7.x/initials/svg?seed=⚽&backgroundColor=e94560&textColor=fff&fontSize=50",
+      "src": "https://api.dicebear.com/7.x/identicon/svg?seed=⚽&backgroundColor=e94560&textColor=fff",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "https://api.dicebear.com/7.x/initials/svg?seed=⚽&backgroundColor=e94560&textColor=fff&fontSize=50",
+      "src": "https://api.dicebear.com/7.x/identicon/svg?seed=⚽&backgroundColor=e94560&textColor=fff",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "https://via.placeholder.com/400x800/1a1a2e/ffffff?text=OddsAlert+Pro",
-      "sizes": "400x800",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Osvježi",
-      "short_name": "Refresh",
-      "description": "Osvježi podatke o utakmicama",
-      "url": "./index.html?refresh=true",
-      "icons": [{ "src": "https://api.dicebear.com/7.x/initials/svg?seed=🔄", "sizes": "96x96" }]
-    },
-    {
-      "name": "Alerti",
-      "short_name": "Alerts",
-      "description": "Prikaži aktivna obaveštenja",
-      "url": "./index.html#alerts",
-      "icons": [{ "src": "https://api.dicebear.com/7.x/initials/svg?seed=🔔", "sizes": "96x96" }]
-    }
-  ],
-  "prefer_related_applications": false,
-  "related_applications": [],
-  "edge_side_panel": {
-    "preferred_width": 400
-  }
+  ]
 }
