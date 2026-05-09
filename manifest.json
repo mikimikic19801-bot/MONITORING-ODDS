@@ -1,47 +1,56 @@
 {
-  "name": "Odds Monitor - Pratite Kvote i Rezultate",
-  "short_name": "Odds Monitor",
-  "description": "Prati utakmice u realnom vremenu, prati kvote i šalje obaveštenja kada favorit krene da gubi ili kada kvote padnu.",
-  "start_url": "/",
-  "scope": "/",
+  "name": "OddsAlert Pro",
+  "short_name": "OddsAlert",
+  "description": "⚽ Praćenje kvota i rezultata uživo sa pametnim alertima",
+  "start_url": "./index.html",
   "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#1a1a2e",
   "orientation": "portrait-primary",
-  "background_color": "#1a1a2e",
-  "theme_color": "#00d4ff",
-  "categories": ["sports", "utilities"],
+  "scope": "./",
+  "lang": "sr",
+  "categories": ["sports", "utilities", "entertainment"],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><circle cx='96' cy='96' r='80' fill='%2300d4ff' opacity='0.12'/><text x='50%' y='50%' font-size='120' fill='%2300d4ff' text-anchor='middle' dy='.3em'>⚽</text></svg>",
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=⚽&backgroundColor=e94560&textColor=fff&fontSize=50",
       "sizes": "192x192",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231a1a2e' width='512' height='512'/><circle cx='256' cy='256' r='200' fill='%2300d4ff' opacity='0.12'/><text x='50%' y='50%' font-size='300' fill='%2300d4ff' text-anchor='middle' dy='.3em'>⚽</text></svg>",
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=⚽&backgroundColor=e94560&textColor=fff&fontSize=50",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any"
-    },
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231a1a2e' width='180' height='180' rx='36'/><circle cx='90' cy='90' r='70' fill='%2300d4ff' opacity='0.12'/><text x='50%' y='50%' font-size='100' fill='%2300d4ff' text-anchor='middle' dy='.3em'>⚽</text></svg>",
-      "sizes": "180x180",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
+      "src": "https://via.placeholder.com/400x800/1a1a2e/ffffff?text=OddsAlert+Pro",
+      "sizes": "400x800",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ],
   "shortcuts": [
     {
-      "name": "Osveži mečeve",
-      "short_name": "Osveži",
-      "description": "Brzo osveži sve mečeve i kvote",
-      "url": "/?action=refresh"
+      "name": "Osvježi",
+      "short_name": "Refresh",
+      "description": "Osvježi podatke o utakmicama",
+      "url": "./index.html?refresh=true",
+      "icons": [{ "src": "https://api.dicebear.com/7.x/initials/svg?seed=🔄", "sizes": "96x96" }]
     },
     {
-      "name": "Moji favoriti",
-      "short_name": "Favoriti",
-      "description": "Pogledaj samo omiljene mečeve",
-      "url": "/?filter=favorites"
+      "name": "Alerti",
+      "short_name": "Alerts",
+      "description": "Prikaži aktivna obaveštenja",
+      "url": "./index.html#alerts",
+      "icons": [{ "src": "https://api.dicebear.com/7.x/initials/svg?seed=🔔", "sizes": "96x96" }]
     }
   ],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }
