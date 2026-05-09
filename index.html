@@ -3,430 +3,242 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#1a1a2e" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0f0f1a" />
   <title>⚽ OddsAlert Pro</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/identicon/svg?seed=⚽&backgroundColor=e94560" />
   <style>
     :root {
-      --bg-primary: #0a0a1a;
-      --bg-secondary: #12122a;
-      --bg-card: #1a1a3a;
-      --bg-card-hover: #252550;
-      --text-primary: #ffffff;
-      --text-secondary: #a0a0c0;
-      --accent: #e94560;
-      --accent-glow: rgba(233,69,96,0.4);
-      --success: #00d9a5;
-      --warning: #ffc107;
-      --danger: #ff4757;
-      --info: #4dabf7;
-      --card-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      --card-border: 1px solid rgba(255,255,255,0.08);
-      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --gradient-accent: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);
-      --gradient-success: linear-gradient(135deg, #00d9a5 0%, #00b894 100%);
+      --bg: #0a0a14; --card: #141428; --text: #e6e6f2; --text-muted: #8888aa;
+      --accent: #e94560; --success: #00d9a5; --warn: #ffc107; --danger: #ff4757;
+      --radius: 16px; --shadow: 0 8px 30px rgba(0,0,0,0.4);
     }
-    [data-theme="light"] {
-      --bg-primary: #f0f2f5;
-      --bg-secondary: #ffffff;
-      --bg-card: #ffffff;
-      --bg-card-hover: #f8f9fa;
-      --text-primary: #1a1a2e;
-      --text-secondary: #6c757d;
-      --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      --card-border: 1px solid rgba(0,0,0,0.08);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      transition: var(--transition);
-      padding-bottom: 90px;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-    .app-container { max-width: 100%; margin: 0 auto; }
-    
-    /* HEADER */
-    .header {
-      background: var(--gradient-primary);
-      padding: 1rem 1.2rem;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: var(--card-shadow);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .header h1 {
-      font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    .header-actions { display: flex; gap: 0.4rem; }
-    
-    /* BUTTONS */
-    .btn {
-      background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
-      color: white; border: 1px solid rgba(255,255,255,0.2);
-      padding: 0.5rem 1rem; border-radius: 10px;
-      font-weight: 600; cursor: pointer; transition: var(--transition);
-      display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem;
-    }
-    .btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-    .btn-primary { background: var(--accent); border: none; box-shadow: 0 4px 15px var(--accent-glow); }
-    .btn-primary:hover { background: #ff6b6b; }
-    .btn-success { background: var(--success); border: none; }
-    .btn-warning { background: var(--warning); color: #1a1a2e; border: none; }
-    .btn-small { padding: 0.35rem 0.7rem; font-size: 0.75rem; border-radius: 8px; }
-    
-    /* STATUS BAR */
-    .status-bar {
-      background: var(--bg-secondary); padding: 0.8rem 1.2rem;
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: var(--card-border); font-size: 0.8rem;
-    }
-    .status-item { display: flex; align-items: center; gap: 0.4rem; color: var(--text-secondary); }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
-    .status-dot.warning { background: var(--warning); }
-    .status-dot.error { background: var(--danger); animation: none; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-    
-    /* MATCHES LIST */
-    .matches-container { padding: 1rem 1.2rem; }
-    .section-title {
-      font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.8rem;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    .section-title::before {
-      content: ''; width: 4px; height: 18px; background: var(--accent);
-      border-radius: 2px;
-    }
-    
-    /* MATCH CARD */
-    .match-card {
-      background: var(--bg-card); border: var(--card-border);
-      border-radius: 16px; padding: 1rem; margin-bottom: 0.8rem;
-      box-shadow: var(--card-shadow); transition: var(--transition);
-      position: relative; overflow: hidden;
-    }
-    .match-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--gradient-primary); opacity: 0; transition: var(--transition);
-    }
-    .match-card:hover { transform: translateY(-2px); background: var(--bg-card-hover); }
-    .match-card::before { opacity: 1; }
-    .match-card.alert {
-      border: 2px solid var(--accent);
-      animation: alertPulse 1.5s infinite;
-    }
-    .match-card.critical {
-      border: 2px solid var(--danger);
-      box-shadow: 0 0 30px rgba(255,71,87,0.3);
-    }
-    @keyframes alertPulse {
-      0%,100% { box-shadow: 0 0 0 0 var(--accent-glow); }
-      50% { box-shadow: 0 0 0 10px transparent; }
-    }
-    
-    .match-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 0.8rem; padding-bottom: 0.8rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .match-league {
-      font-size: 0.75rem; color: var(--text-secondary);
-      background: rgba(255,255,255,0.08); padding: 0.25rem 0.6rem;
-      border-radius: 20px; font-weight: 500;
-    }
-    .match-time {
-      font-size: 0.8rem; font-weight: 600; color: var(--info);
-    }
-    .match-time.live { color: var(--danger); animation: blink 1s infinite; }
-    @keyframes blink { 50% { opacity: 0.6; } }
-    
-    .match-teams {
-      display: flex; justify-content: space-between; align-items: center;
-      margin: 0.5rem 0;
-    }
-    .team {
-      flex: 1; text-align: center; padding: 0.3rem;
-      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-    }
-    .team-name {
-      font-weight: 600; font-size: 0.95rem; white-space: nowrap;
-      overflow: hidden; text-overflow: ellipsis; max-width: 120px;
-    }
-    .team-favorite {
-      background: var(--gradient-accent); color: white;
-      font-size: 0.65rem; padding: 0.15rem 0.5rem;
-      border-radius: 10px; font-weight: 700;
-    }
-    .team-logo {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--bg-secondary); display: flex;
-      align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700;
-    }
-    
-    .match-score {
-      font-size: 1.5rem; font-weight: 800; color: var(--text-primary);
-      padding: 0 1rem; min-width: 60px; text-align: center;
-    }
-    .match-score.live { color: var(--danger); }
-    
-    .match-odds {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0.4rem; margin-top: 0.8rem;
-    }
-    .odd-box {
-      background: rgba(255,255,255,0.05); border-radius: 10px;
-      padding: 0.5rem; text-align: center; transition: var(--transition);
-    }
-    .odd-box:hover { background: rgba(255,255,255,0.1); }
-    .odd-label {
-      font-size: 0.7rem; color: var(--text-secondary);
-      margin-bottom: 0.2rem; text-transform: uppercase;
-    }
-    .odd-value {
-      font-size: 1.1rem; font-weight: 700; color: var(--text-primary);
-    }
-    .odd-value.dropped {
-      color: var(--danger); animation: dropAlert 0.5s ease-out;
-    }
-    .odd-value.risen { color: var(--success); }
-    @keyframes dropAlert {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); color: #ff6b6b; }
-      100% { transform: scale(1); }
-    }
-    .odd-initial {
-      font-size: 0.7rem; color: var(--text-secondary);
-      margin-top: 0.2rem;
-    }
-    .odd-change {
-      font-size: 0.7rem; margin-top: 0.2rem; font-weight: 600;
-    }
-    .odd-change.negative { color: var(--danger); }
-    .odd-change.positive { color: var(--success); }
-    
-    .match-alerts {
-      margin-top: 0.8rem; padding: 0.6rem;
-      background: rgba(233,69,96,0.1); border-left: 3px solid var(--accent);
-      border-radius: 0 8px 8px 0; font-size: 0.8rem;
-    }
-    .match-alerts.critical {
-      background: rgba(255,71,87,0.15); border-left-color: var(--danger);
-    }
-    .alert-icon { margin-right: 0.3rem; }
-    
-    /* NOTIFICATIONS PANEL */
-    .notifications-panel {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: var(--bg-secondary); border-top: var(--card-border);
-      padding: 0.8rem 1.2rem; z-index: 200;
-      transform: translateY(100%); transition: transform 0.3s ease;
-      max-height: 40vh; overflow-y: auto;
-    }
-    .notifications-panel.active { transform: translateY(0); }
-    .notifications-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 0.8rem; padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .notification-item {
-      background: var(--bg-card); border-radius: 12px;
-      padding: 0.8rem; margin-bottom: 0.5rem;
-      border-left: 3px solid var(--info);
-      animation: slideIn 0.3s ease;
-    }
-    .notification-item.alert { border-left-color: var(--accent); }
-    .notification-item.critical { border-left-color: var(--danger); }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    .notification-time {
-      font-size: 0.7rem; color: var(--text-secondary);
-      margin-bottom: 0.3rem;
-    }
-    .notification-message {
-      font-size: 0.9rem; font-weight: 500;
-    }
-    .notification-match {
-      font-size: 0.8rem; color: var(--text-secondary);
-      margin-top: 0.3rem;
-    }
-    
-    /* SOUND TOGGLE */
-    .sound-indicator {
-      position: fixed; top: 80px; right: 1rem;
-      background: var(--bg-card); border-radius: 50%;
-      width: 40px; height: 40px; display: flex;
-      align-items: center; justify-content: center;
-      box-shadow: var(--card-shadow); z-index: 90;
-      cursor: pointer; transition: var(--transition);
-    }
-    .sound-indicator.muted { opacity: 0.5; }
-    .sound-indicator:active { transform: scale(0.95); }
-    
-    /* LOADING */
-    .loading {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 3rem 1rem;
-      color: var(--text-secondary);
-    }
-    .spinner {
-      width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
-      border-top-color: var(--accent); border-radius: 50%;
-      animation: spin 1s linear infinite; margin-bottom: 1rem;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    
-    /* EMPTY STATE */
-    .empty-state {
-      text-align: center; padding: 3rem 1rem; color: var(--text-secondary);
-    }
-    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
-    
-    /* FOOTER NAV */
-    .footer-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: var(--bg-secondary); border-top: var(--card-border);
-      display: flex; justify-content: space-around; padding: 0.8rem 0;
-      z-index: 150;
-    }
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 0.3rem; color: var(--text-secondary);
-      padding: 0.3rem 1rem; border-radius: 12px;
-      transition: var(--transition); cursor: pointer;
-      font-size: 0.75rem;
-    }
-    .nav-item.active {
-      color: var(--accent); background: rgba(233,69,96,0.1);
-    }
-    .nav-item:active { transform: scale(0.95); }
-    .nav-icon { font-size: 1.3rem; }
-    
-    /* INSTALL PROMPT */
-    .install-prompt {
-      position: fixed; bottom: 80px; left: 1rem; right: 1rem;
-      background: var(--gradient-primary); border-radius: 16px;
-      padding: 1rem; display: flex; justify-content: space-between;
-      align-items: center; box-shadow: var(--card-shadow);
-      z-index: 180; animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .install-prompt-text {
-      color: white; font-size: 0.9rem; font-weight: 500;
-    }
-    .install-prompt .btn {
-      background: white; color: #667eea; border: none;
-    }
-    
-    /* RESPONSIVE */
-    @media (min-width: 768px) {
-      .app-container { max-width: 600px; margin: 0 auto; }
-      .match-teams { gap: 0.5rem; }
-      .team-name { font-size: 1rem; }
-    }
-    
-    /* ACCESSIBILITY */
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
-    }
+    [data-theme="light"] { --bg:#f4f4f9; --card:#fff; --text:#1a1a2e; --text-muted:#555; --shadow:0 6px 20px rgba(0,0,0,0.1); }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; }
+    header { background:var(--card); padding:1rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:10; box-shadow:var(--shadow); }
+    h1 { font-size:1.2rem; display:flex; align-items:center; gap:0.4rem; }
+    .btn { background:var(--accent); color:#fff; border:none; padding:0.5rem 0.8rem; border-radius:10px; font-weight:600; cursor:pointer; }
+    .btn:active { transform:scale(0.95); }
+    .status { font-size:0.8rem; color:var(--text-muted); padding:0.5rem 1rem; display:flex; justify-content:space-between; }
+    .container { padding:1rem; }
+    .match { background:var(--card); border-radius:var(--radius); padding:0.9rem; margin-bottom:0.8rem; box-shadow:var(--shadow); border-left:4px solid transparent; transition:0.2s; }
+    .match.alert { border-left-color:var(--accent); background:rgba(233,69,96,0.08); }
+    .match.critical { border-left-color:var(--danger); animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,71,87,0.4)} 50%{box-shadow:0 0 0 8px transparent} }
+    .teams { display:flex; justify-content:space-between; align-items:center; margin:0.5rem 0; }
+    .team { text-align:center; flex:1; font-weight:600; }
+    .score { font-size:1.4rem; font-weight:800; padding:0 0.8rem; }
+    .live { color:var(--danger); font-weight:700; }
+    .odds { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.4rem; margin-top:0.6rem; }
+    .odd { background:rgba(255,255,255,0.05); padding:0.4rem; border-radius:10px; text-align:center; }
+    .odd-label { font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; }
+    .odd-val { font-weight:700; font-size:0.95rem; }
+    .odd-drop { color:var(--danger); }
+    .odd-rise { color:var(--success); }
+    .alert-box { margin-top:0.6rem; padding:0.5rem; background:rgba(255,193,7,0.1); border-radius:10px; font-size:0.8rem; display:none; }
+    .alert-box.show { display:block; }
+    .fab { position:fixed; bottom:20px; right:20px; width:50px; height:50px; border-radius:50%; background:var(--accent); color:#fff; border:none; font-size:1.5rem; box-shadow:var(--shadow); cursor:pointer; z-index:20; }
+    .fab.muted { opacity:0.5; }
+    .empty { text-align:center; padding:3rem 1rem; color:var(--text-muted); }
+    .install-banner { position:fixed; bottom:80px; left:1rem; right:1rem; background:var(--card); padding:0.8rem; border-radius:12px; display:none; justify-content:space-between; align-items:center; box-shadow:var(--shadow); }
+    .install-banner.show { display:flex; }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- HEADER -->
-    <header class="header">
-      <h1>⚽ OddsAlert Pro</h1>
-      <div class="header-actions">
-        <button class="btn" id="refreshBtn" title="Osveži">🔄</button>
-        <button class="btn" id="themeBtn" title="Tema">🌙</button>
-      </div>
-    </header>
-
-    <!-- STATUS BAR -->
-    <div class="status-bar">
-      <div class="status-item">
-        <span class="status-dot" id="connectionStatus"></span>
-        <span id="statusText">Povezano</span>
-      </div>
-      <div class="status-item">
-        <span>🔄</span>
-        <span id="lastUpdate">--:--</span>
-      </div>
-      <div class="status-item">
-        <span>🎫</span>
-        <span id="apiUsage">0/200</span>
-      </div>
+  <header>
+    <h1>⚽ OddsAlert Pro</h1>
+    <div style="display:flex;gap:0.4rem">
+      <button class="btn" id="refresh">🔄</button>
+      <button class="btn" id="theme">🌙</button>
     </div>
-
-    <!-- SOUND TOGGLE -->
-    <div class="sound-indicator" id="soundToggle" title="Zvuk">🔊</div>
-
-    <!-- MAIN CONTENT -->
-    <main class="matches-container" id="matchesContainer">
-      <div class="loading" id="loadingState">
-        <div class="spinner"></div>
-        <p>Učitavanje utakmica...</p>
-      </div>
-      <div class="empty-state" id="emptyState" style="display:none">
-        <div class="empty-icon">📭</div>
-        <p>Nema aktivnih utakmica</p>
-      </div>
-      <div id="matchesList"></div>
-    </main>
-
-    <!-- NOTIFICATIONS PANEL -->
-    <div class="notifications-panel" id="notificationsPanel">
-      <div class="notifications-header">
-        <strong>🔔 Obaveštenja</strong>
-        <button class="btn btn-small" id="clearNotifications">Očisti</button>
-      </div>
-      <div id="notificationsList"></div>
-    </div>
-
-    <!-- FOOTER NAV -->
-    <nav class="footer-nav">
-      <div class="nav-item active" data-tab="live">
-        <span class="nav-icon">🔴</span>
-        <span>Uživo</span>
-      </div>
-      <div class="nav-item" data-tab="upcoming">
-        <span class="nav-icon">📅</span>
-        <span>Plan</span>
-      </div>
-      <div class="nav-item" data-tab="alerts">
-        <span class="nav-icon">🔔</span>
-        <span>Alerti</span>
-      </div>
-      <div class="nav-item" data-tab="settings">
-        <span class="nav-icon">⚙️</span>
-        <span>Podeš.</span>
-      </div>
-    </nav>
-
-    <!-- INSTALL PROMPT (hidden by default) -->
-    <div class="install-prompt" id="installPrompt" style="display:none">
-      <span class="install-prompt-text">📱 Instaliraj aplikaciju za brži pristup!</span>
-      <button class="btn btn-small" id="installBtn">Instaliraj</button>
-    </div>
+  </header>
+  <div class="status">
+    <span id="statusText">🟢 Povezano</span>
+    <span id="timer">Sledeći refresh: --:--</span>
+  </div>
+  <div class="container" id="list">
+    <div class="empty">⏳ Učitavanje utakmica...</div>
+  </div>
+  <button class="fab" id="soundToggle">🔊</button>
+  <div class="install-banner" id="installBanner">
+    <span>📱 Instaliraj kao aplikaciju</span>
+    <button class="btn" id="installBtn">Instaliraj</button>
   </div>
 
-  <!-- AUDIO ELEMENTS -->
-  <audio id="soundAlert" preload="auto">
-    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLHPM8uKCNAoqZsH06pEuCyphr+7wpTgMKl6n7O2sQAkoW5nm76pNCilZk+PtpUwJKleG3+mlSwopV33a55pNCilWdNPllk0KKVNzz+OSTAopUmrN4Y1MCilRZsjhhkwKKU5gwN5sTAopTVy82lpMCilLVLXUTUwKKUlQs9BGTAppR0qozDxKSglHRqXHM0pKCUVEoL4pSkoJRD+drB9KSglDNJWpGEpKCT4wj6YOSkoJPSqLpP9JSgk4I4Ke+ElKCTQeiZn2SUoJLhaHk/JJSgkoEYGN7ElKCSUOgYPoSUoJHwR9d+RJSgkcBnpq3klKCRcCdmXUSUoJEwBxXsJJSgkOAmxZvklKCRH/ZlG4SUoJDf5kTbZJSgkL+1pHsElK
-</parameter>
-</function>
-</tool_call>
+  <script>
+    // 🔑 KONFIGURACIJA
+    const API_KEYS = ['8464fe0b2c02cc648155fd7aaa8a5806', 'f1cce1e4be71307c45a7a206e4a16495'];
+    const ODDS_KEY = '0fe3d301aa11cda024d49acef8511f22';
+    let keyIdx = 0, soundOn = true, matches = {}, initialOdds = {}, lastCheck = 0;
+    const REFRESH_MIN = 3, REFRESH_MAX = 4;
+    const FAV_ODDS_LIMIT = 1.75;
+    const DROP_THRESHOLD = 0.10; // 10%
+
+    // 🎵 ZVUK (Web Audio API - nema potrebe za eksternim fajlovima)
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq=800, dur=0.4) {
+      if(!soundOn) return;
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = freq; o.type = 'sine';
+      g.gain.setValueAtTime(0.3, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur);
+      o.start(); o.stop(ctx.currentTime + dur);
+    }
+
+    // 🌐 POMOĆNE FUNKCIJE
+    const $ = id => document.getElementById(id);
+    const now = () => new Date();
+    const pad = n => n.toString().padStart(2,'0');
+    const fmtTime = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    const getNextRefresh = () => Math.floor(Math.random() * (REFRESH_MAX-REFRESH_MIN+1) + REFRESH_MIN) * 60000;
+    let nextRefreshAt = now().getTime() + getNextRefresh();
+
+    async function fetchWithRetry(url, headers={}) {
+      for(let i=0; i<API_KEYS.length; i++) {
+        const idx = (keyIdx + i) % API_KEYS.length;
+        const res = await fetch(url, { headers: { ...headers, 'x-apisports-key': API_KEYS[idx] } });
+        if(res.status === 429) continue;
+        keyIdx = idx;
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      }
+      throw new Error('API limit reached');
+    }
+
+    function getOddsFromApi(matchId) {
+      // The Odds API zahteva specifičan format. Koristićemo placeholder endpoint koji radi sa ključem.
+      // Za pravi rad, zameni URL sa zvaničnim endpointom npr: https://api.the-odds-api.com/v4/sports/soccer_epl/odds/?apiKey=${ODDS_KEY}
+      return Promise.resolve(null); // Placeholder - u proizvodnji se zamenjuje pravim fetch-om
+    }
+
+    function calcDrop(initial, current) {
+      if(!initial || !current) return 0;
+      return ((initial - current) / initial) * 100;
+    }
+
+    function showAlert(match, type, msg) {
+      const box = document.querySelector(`[data-match="${match.id}"] .alert-box`);
+      if(box) { box.textContent = msg; box.classList.add('show'); }
+      beep(type==='critical'?400:800);
+      if('Notification' in window && Notification.permission==='granted') {
+        new Notification('⚽ OddsAlert', { body: msg, tag: match.id });
+      }
+    }
+
+    function renderMatches(data) {
+      const list = $('list');
+      list.innerHTML = '';
+      if(!data?.response?.length) { list.innerHTML = '<div class="empty">📭 Nema utakmica za danas</div>'; return; }
+
+      data.response.forEach(m => {
+        const isLive = m.fixture.status.short === '1H' || m.fixture.status.short === '2H' || m.fixture.status.short === 'HT';
+        const fav = m.odds?.find(o => o < FAV_ODDS_LIMIT);
+        const isFavMatch = !!fav;
+        const initial = initialOdds[m.fixture.id] || fav;
+        if(isFavMatch && !initialOdds[m.fixture.id]) initialOdds[m.fixture.id] = fav;
+
+        const div = document.createElement('div');
+        div.className = `match ${isFavMatch?'':' '} ${isLive?'':''}`;
+        div.dataset.match = m.fixture.id;
+        div.innerHTML = `
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.3rem">${m.league.name} • ${fmtTime(new Date(m.fixture.date))}</div>
+          <div class="teams">
+            <div class="team">${m.teams.home.name}</div>
+            <div class="score ${isLive?'live':''}">${m.goals.home} - ${m.goals.away} ${isLive?`<br><small>${m.fixture.status.elapsed}'</small>`:''}</div>
+            <div class="team">${m.teams.away.name}</div>
+          </div>
+          <div class="odds">
+            <div class="odd"><div class="odd-label">1</div><div class="odd-val" id="o1-${m.fixture.id}">${m.odds?.[0]||'-'}</div><div style="font-size:0.6rem;color:var(--text-muted)">init: ${initialOdds[m.fixture.id]?.[0]||'-'}</div></div>
+            <div class="odd"><div class="odd-label">X</div><div class="odd-val" id="oX-${m.fixture.id}">${m.odds?.[1]||'-'}</div></div>
+            <div class="odd"><div class="odd-label">2</div><div class="odd-val" id="o2-${m.fixture.id}">${m.odds?.[2]||'-'}</div></div>
+          </div>
+          <div class="alert-box"></div>
+        `;
+        list.appendChild(div);
+
+        // 🚨 LOGIKA ALERTA
+        if(isFavMatch) {
+          const elapsed = m.fixture.status.elapsed || 0;
+          const goalsHome = m.goals.home, goalsAway = m.goals.away;
+          const favIsHome = initial < (initialOdds[m.fixture.id]?.[2] || 99);
+          const favLosing = favIsHome ? goalsHome < goalsAway : goalsAway < goalsHome;
+          const draw75 = elapsed >= 75 && goalsHome === goalsAway;
+          const drop = calcDrop(initial, fav);
+
+          if(favLosing) {
+            div.classList.add('alert');
+            showAlert(m, 'alert', `⚠️ Favorit gubi! Početna: ${initial} → Live: ${favLosing?'gubi':''}`);
+          }
+          if(draw75) {
+            div.classList.add('critical');
+            showAlert(m, 'critical', `🟡 Nerešeno u ${elapsed}'. Favorit koči!`);
+          }
+          if(drop > DROP_THRESHOLD * 100) {
+            div.classList.add('alert');
+            showAlert(m, 'alert', `📉 Kvota pala ${drop.toFixed(1)}%! Init: ${initial} → Live: ${fav}`);
+          }
+        }
+      });
+    }
+
+    async function loadData() {
+      $('statusText').textContent = '🔄 Osvežavanje...';
+      try {
+        const date = now().toISOString().split('T')[0];
+        const fixtures = await fetchWithRetry(`https://v3.football.api-sports.io/fixtures?date=${date}`);
+        // Simulacija kvota (u produkciji pozovi The Odds API)
+        fixtures.response.forEach(m => {
+          if(!m.odds) m.odds = [1.80, 3.40, 4.20]; // fallback
+        });
+        renderMatches(fixtures);
+        lastCheck = now().getTime();
+        $('statusText').textContent = `✅ Ažurirano: ${fmtTime(now())}`;
+      } catch(e) {
+        $('statusText').textContent = '❌ Greška pri učitavanju';
+        console.error(e);
+      }
+      scheduleNext();
+    }
+
+    function scheduleNext() {
+      nextRefreshAt = now().getTime() + getNextRefresh();
+      const updateTimer = () => {
+        const diff = Math.max(0, Math.floor((nextRefreshAt - now().getTime())/1000));
+        $('timer').textContent = `Sledeći refresh: ${pad(Math.floor(diff/60))}:${pad(diff%60)}`;
+        if(diff<=0) loadData();
+        else requestAnimationFrame(updateTimer);
+      };
+      updateTimer();
+    }
+
+    // 🔔 PODEŠAVANJA
+    $('refresh').onclick = loadData;
+    $('theme').onclick = () => document.body.dataset.theme = document.body.dataset.theme==='light'?'':'light';
+    $('soundToggle').onclick = function() { soundOn = !soundOn; this.textContent = soundOn?'🔊':'🔇'; this.classList.toggle('muted',!soundOn); };
+    if('Notification' in window && Notification.permission==='default') Notification.requestPermission();
+
+    // 📲 PWA
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      $('installBanner').classList.add('show');
+      $('installBtn').onclick = () => { e.prompt(); $('installBanner').classList.remove('show'); };
+    });
+    if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+
+    // 🕐 SNAPSHOT 13h & 17h
+    setInterval(() => {
+      const h = now().getHours();
+      if((h===13 || h===17) && now().getMinutes()===0 && lastCheck < now().getTime()-60000) {
+        const snapshot = { time: fmtTime(now()), matches: Object.values(matches) };
+        localStorage.setItem(`snapshot_${h}`, JSON.stringify(snapshot));
+        beep(600, 0.6);
+        new Notification('📸 Snapshot', { body: `Sačuvan izveštaj za ${h}:00h.`, tag:`snap${h}` });
+      }
+    }, 60000);
+
+    loadData();
+  </script>
+</body>
+</html>
